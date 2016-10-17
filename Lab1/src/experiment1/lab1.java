@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+lab3
+修改内容
+*/
 class IntegerString {
 	int number;
 	String stringvarible;//构造一个类，包括系数number和变量stringvariable
@@ -20,7 +24,7 @@ public class lab1 {
 
 	public static void main(String[] args) throws IOException {
 		/*
-		 * 主函数执行读入表达式和指令的功能 
+		 * 主函数执行读入表达式和指令的功能
 		 */
 		BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
 		exp = buff.readLine();
@@ -149,7 +153,7 @@ public class lab1 {
 					 */
 					System.out.println("Invaild simplification!");
 					return;
-				} 
+				}
 				else
 				{
 					/*
