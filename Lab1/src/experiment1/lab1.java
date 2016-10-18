@@ -1,5 +1,6 @@
 package experiment1;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,29 +8,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-/*
-lab3
-修改内容
-*/
 class IntegerString {
 	int number;
 	String stringvarible;//构造一个类，包括系数number和变量stringvariable
 }
-
 public class lab1 {
 	public static String cmd;//cmd表示指令
 	public static String exp;//exp表示表达式
 	public static String expression;//expression也表示表达式
-
 	public static void main(String[] args) throws IOException {
 		/*
-		 * 主函数执行读入表达式和指令的功能
+		 * 主函数执行读入表达式和指令的功能 
 		 */
-		BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
-		exp = buff.readLine();
-		cmd = buff.readLine();
-		validate(cmd);
+		BufferedReader buff = new BufferedReader(
+				new InputStreamReader(System.in));
+		while(true)
+		{
+			System.out.println("请输入表达式：");
+			exp = buff.readLine();
+			System.out.println("请输入命令：");
+			cmd = buff.readLine();
+			validate(cmd);
+		}
+		
 	}
 
 	public static void expression(String string) throws IOException {
@@ -41,41 +42,41 @@ public class lab1 {
 
 	private static void simplify() throws IOException {
 		ArrayList<IntegerString> arraylist = new ArrayList<IntegerString>();
-		Map<String, Integer> map = new HashMap<String, Integer>();//map用来合并同类项
-		StringBuilder stringbuff = new StringBuilder();//stringbuilder用来对字符串进行动态操作
-		String stringarray[] = expression.split("\\+");//首先先以加号分割
-		for (String str : stringarray) {//对每个加号连接的式子进行划尖
+		Map<String, Integer> map = new HashMap<String, Integer>(); //map用来合并同类项
+		StringBuilder stringbuff = new StringBuilder(); //stringbuilder用来对字符串进行动态操作
+		String[] stringarray = expression.split("\\+");  //首先先以加号分割
+		for (String str : stringarray) { //对每个加号连接的式子进行划尖
 			int constant = 1;
 			int number1;
 			List<String> varibles = new ArrayList<String>();
-			String stringarray1[] = str.split("\\*");
+			String[] stringarray1 = str.split("\\*");
 			IntegerString integerstring1 = new IntegerString();
 			StringBuilder stringbuff1 = new StringBuilder();
 			for (String element : stringarray1) {
-				try {
+				try {	
 					/*
 					 * 如果该变量是数字，就乘起来
 					 */
 					number1 = Integer.parseInt(element);
 					constant *= number1;
 				} catch (Exception e) {
-					varibles.add(element);//如果是变量，就加到字符串数组里面
+					varibles.add(element); //如果是变量，就加到字符串数组里面
 				}
 			}
 			for (String var : varibles) {
-				stringbuff1.append(var);//将字符串数组中的变量加入StringBuilder
+				stringbuff1.append(var); //将字符串数组中的变量加入StringBuilder
 			}
 			integerstring1.stringvarible = stringbuff1.toString();//每一个式子的变量加入类的未知数变量中
-			integerstring1.number = constant;//每个式子的数值加入类的数值中
+			integerstring1.number = constant; //每个式子的数值加入类的数值中
 			arraylist.add(integerstring1);
 		}
-		for (IntegerString intstr : arraylist) {//合并同类项
+		for (IntegerString intstr : arraylist) { //合并同类项
 			String key = intstr.stringvarible;
 			int value = intstr.number;
-			if (map.containsKey(key) == false) {
-				map.put(key, value);//如果系数不同，直接将键值对加入map
-			} else if (map.containsKey(key) == true) {
-				value += map.get(key);//如果系数相同，那么就将系数累加之后再加入map
+			if (!map.containsKey(key)) {
+				map.put(key, value); //如果系数不同，直接将键值对加入map
+			} else if (map.containsKey(key)) {
+				value += map.get(key); //如果系数相同，那么就将系数累加之后再加入map
 				map.put(key, value);
 			}
 		}
@@ -87,7 +88,7 @@ public class lab1 {
 			stringbuff.append(map.get(keyinset).toString() + keyinset + '+');
 		}
 		int len = stringbuff.length();
-		stringbuff.deleteCharAt(len - 1);//去掉最后一个加号
+		stringbuff.deleteCharAt(len - 1); //去掉最后一个加号
 		expression(stringbuff.toString());
 	}
 
@@ -97,17 +98,19 @@ public class lab1 {
 		StringBuilder stringbuff3 = new StringBuilder();
 		for (String element : stringarray2) {
 			if (element.contains(varibles2)) {
+				/*
 				if(element.contains("^")){
 					/*
 					 * 这段代码处理用^表示乘方的情况
-					 */
+					 *
 					int len3=element.indexOf("^");
 					String number2=element.substring(len3 +1, len3 +2);//截取^后面的数值
 					stringbuff3.append(number2).append("*");//将指数先加入StringBuilder
 					int number3=Integer.parseInt(number2)-1;
 					element=element.replace(number2, Integer.toString(number3));//求导之后将指数减一
 				}
-				else{
+			*/
+				//else{
 					/*
 					 * 这段处理正常乘号*连接的变量求导
 					 */
@@ -119,15 +122,15 @@ public class lab1 {
 							constant++;//最终累加得到x的个数
 					}
 					element = element.replaceFirst(varibles2, Integer.toString(constant));
-				}
+				//}
 				stringbuff3.append(element);//把处理后的式子加入StringBuilder
 				stringbuff3.append("+");
 			}
 		}
-		int len1 = stringbuff3.length();
+		int len1 = stringbuff3.length(); 
 		stringbuff3.deleteCharAt(len1 - 1);//当然，在这里也要去掉最后一个加号
 		expression = stringbuff3.toString();
-		simplify();//调用化简函数
+		simplify(); //调用化简函数
 	}
 
 	public static void validate(String string) throws IOException {
@@ -144,7 +147,7 @@ public class lab1 {
 			}
 			for (String string1 : varibles) {
 				String varible4[] = string1.split("=");
-				if ((exp.indexOf(varible4[0]) == -1)) {
+				if (exp.indexOf(varible4[0]) == -1) {
 					/*
 					 * 这段代码看原表达式是否包含带入的变量
 					 * 比如原表达式是关于x的多项式
@@ -153,7 +156,7 @@ public class lab1 {
 					 */
 					System.out.println("Invaild simplification!");
 					return;
-				}
+				} 
 				else
 				{
 					/*
@@ -180,7 +183,8 @@ public class lab1 {
 				expression = expression.replaceAll(replacement[0], replacement[1]);
 			}
 			simplify();
-		} else if (string.startsWith("!d/d ")) {//求导指令
+		} else if (string.startsWith("!d/d ")) 
+		     {   
 			String varible = string.substring(5);
 			if (exp.indexOf(varible) == -1) {
 				/*
@@ -190,8 +194,11 @@ public class lab1 {
 				 */
 				System.out.println("Inavaild derivative!");
 				return;
-			} else
+			}
+			else
+			{
 				derivative();
+			}
 		}
 	}
 }
